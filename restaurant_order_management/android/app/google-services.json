@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "146251769645",
+    "project_id": "restaurant-order-managem-64f64",
+    "storage_bucket": "restaurant-order-managem-64f64.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146251769645:android:260248a5e5bd99414e15a4",
+        "android_client_info": {
+          "package_name": "com.example.restaurant_order_management"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "146251769645-e8iiadi34vk2gv4ujm73vsl896a72bhh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2HXhL9P54YZz50tgwi_wU6ikEMpev8fI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "146251769645-e8iiadi34vk2gv4ujm73vsl896a72bhh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
