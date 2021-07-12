@@ -1,15 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'src/my_app.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
-import 'package:restaurant_order_management/sign_up.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:restaurant_order_management/GetStarted.dart';
+
+
+import 'WelcomePage.dart';
+
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
   runApp(MyApp());
 }
 
@@ -24,7 +31,10 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.blue[500],
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: LoginPage(),
+      home: GetStarted(),
+      routes: <String, WidgetBuilder> {
+      '/login': (BuildContext context) => LoginPage()
+    },
     );
   }
 }
@@ -58,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-
+      backgroundColor: Colors.white,
         appBar: null,
         body: Container(
           padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
@@ -120,6 +130,7 @@ class _LoginPageState extends State<LoginPage> {
       child: Text(
         "Tasty Restaurant",
         style: TextStyle(
+          color: Color(0xffff5763),
           fontWeight: FontWeight.bold,
           fontSize: 36,
         ),
@@ -163,18 +174,6 @@ class _LoginPageState extends State<LoginPage> {
             padding: EdgeInsets.symmetric(vertical: 16),
             child: Row(
               children: <Widget>[
-                SizedBox(
-                  height: 24,
-                  width: 24,
-                  child: Checkbox(
-                    value: _rememberMe,
-                    onChanged: _pressRememberMe,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 16),
-                  child: Text("Remember Me"),
-                ),
 
               ],
             ),
@@ -201,9 +200,12 @@ class _LoginPageState extends State<LoginPage> {
       child:Column(
         children: [
           ElevatedButton(
-            child: Text(
-              "LOGIN",
-              style: TextStyle(color: Colors.white),
+            child: Container(
+
+              child: Text(
+                "LOGIN",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
             onPressed: () {},
           ),
@@ -214,7 +216,9 @@ class _LoginPageState extends State<LoginPage> {
           SignInButton(
             Buttons.Google,
             text: "Sign up with Google",
-            onPressed: () {},
+            onPressed: () {
+              _signInWithGoogle();
+            },
           ),
           SizedBox(
             width: 30,
@@ -224,11 +228,64 @@ class _LoginPageState extends State<LoginPage> {
             Buttons.Facebook,
             text: "Sign up with facebook",
             mini: false,
-            onPressed: () {},
+            onPressed: () {
+              _signInWithFacebook();
+            },
           )
         ],
       )
     );
+  }
+
+  Future<void> _signInWithGoogle() async {
+    try {
+      UserCredential userCredential;
+
+        final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+        final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+        final googleAuthCredential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+        userCredential = await FirebaseAuth.instance.signInWithCredential(googleAuthCredential);
+
+      final user = userCredential.user;
+      print(user);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => WelcomePage()),
+      );
+      // Scaffold.of(context).showSnackBar(SnackBar(
+      //   content: Text('Sign In ${user.uid ?? } with Google'),
+      // ));Google
+    } catch (e) {
+      print(e);
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to sign in with Google: $e'),
+        ),
+      );
+    }
+  }
+  Future<void> _signInWithFacebook() async {
+    try {
+      final LoginResult result = await FacebookAuth.instance.login();
+
+      // Create a credential from the access token
+      final facebookAuthCredential = FacebookAuthProvider.credential(result.accessToken!.token);
+
+      // Once signed in, return the UserCredential
+       await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+
+    } catch (e) {
+      print(e);
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to sign in with Facebook: $e'),
+        ),
+      );
+    }
   }
 }
 

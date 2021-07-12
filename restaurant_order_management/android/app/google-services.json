@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "146251769645-958r6gpgbom501p9pegu13olockkhohk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.restaurant_order_management",
+            "certificate_hash": "7d600de65b132aa730450d7a52c69dba498da32c"
+          }
+        },
+        {
           "client_id": "146251769645-e8iiadi34vk2gv4ujm73vsl896a72bhh.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "146251769645-e8iiadi34vk2gv4ujm73vsl896a72bhh.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "146251769645-epsh2hjcs3ddubibuv0h11qhn7j22kfp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.restaurantOrderManagement"
+              }
             }
           ]
         }
